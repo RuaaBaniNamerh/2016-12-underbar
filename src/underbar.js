@@ -77,7 +77,7 @@
     });
 
     return result;
-};
+  };
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
@@ -137,7 +137,7 @@
     return _.map(collection, function(item){
       return item[key];
     });
-};
+  };
 
   // Reduces an array or object to a single value by repetitively calling
   // iterator(accumulator, item) for each item. accumulator should be
@@ -179,27 +179,25 @@
       }
       return item === target;
     }, false);
-};
+  };
 
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-
-    if(iterator===undefined&&collection===false){
-    return false  
-    }else{
     return _.reduce(collection,function(acc,el){
-
+  if(iterator===undefined){
+    return acc&&el
+  }
       return acc&& !!iterator(el) 
     },true)
-      
-}
-    }
+
+  }
+
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-};
+  };
 
 
   /**
@@ -254,11 +252,11 @@
         // infromation from one function call to another.
         result = func.apply(this, arguments);
         alreadyCalled = true;
-    }
+      }
       // The new function always returns the originally computed result.
       return result;
+    };
   };
-};
 
   // Memorize an expensive function's results by storing them. You may assume
   // that the function only takes primitives as arguments.
