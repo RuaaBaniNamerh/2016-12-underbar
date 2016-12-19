@@ -185,9 +185,9 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     return _.reduce(collection,function(acc,el){
-  if(iterator===undefined){
-    return acc&&el
-  }
+      if(iterator===undefined){
+        return acc&&el
+      }
       return acc&& !!iterator(el) 
     },true)
 
@@ -197,6 +197,17 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    if (collection.length === 0){
+      return false
+    }
+    return _.reduce(collection,function(acc,el){
+      if(iterator===undefined){
+        return acc||el
+      }
+      return acc|| !!iterator(el) 
+    },false)
+
+
   };
 
 
@@ -219,13 +230,31 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
-  };
+    var arg= Array.from(arguments)
+    arg = arg.slice(1);
+    _.each(arg,function(el,val){
+      for( var key in el){
+       obj[key]=el[key]  
+     }
+   }) 
+    return obj; 
+  }
+
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
-  };
-
+   var arg= Array.from(arguments)
+   arg = arg.slice(1);
+   _.each(arg,function(el,val){
+    for( var key in el){
+      if(obj[key]===undefined){
+        obj[key]=el[key]
+      } 
+    }
+  }) 
+   return obj; 
+ }
 
   /**
    * FUNCTIONS
@@ -266,9 +295,23 @@
   // _.memoize should return a function that, when called, will check if it has
   // already computed the result for the given argument and return that value
   // instead if possible.
-  _.memoize = function(func) {
-  };
+   _.memoize = function(func) {
+    var obj ={};
+  //  var alreadyCalled = true;
+  return function(){
+    var ob =JSON.stringify(arguments)
+    if(obj[ob]===undefined){
+     return   obj[ob]=func.apply(this, arguments);
+     // alreadyCalled = true;
+    }else{
 
+   return obj[ob]
+    }
+  }
+  
+   }
+
+  
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
   //
